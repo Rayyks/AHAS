@@ -1,7 +1,98 @@
+// Import the necessary dependencies if not already imported
 import React from "react";
+import { Link } from "react-router-dom";
+import { useService } from "../../context/ServiceContextProvider";
+import TableSkeletonLoader from "../../components/ui/TableSkeletonLoader";
+import ServiceTypeBadge from "../../components/ui/ServiceTypes";
 
 const OrderList = () => {
-  return <div>OrderList</div>;
+  const { loading, services } = useService();
+
+  // Function to format date to a more detailed format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZoneName: "short",
+    };
+    return date.toLocaleDateString("en-US", options);
+  };
+
+  // Function to parse the JSON array string
+  const parseServiceTypes = (types) => {
+    try {
+      return JSON.parse(types);
+    } catch (error) {
+      console.error("Error parsing service types:", error);
+      return [];
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="overflow-x-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
+        <table className="min-w-full divide-y-2 divide-gray-200 dark:divide-gray-700">
+          <thead className="bg-gray-50 dark:bg-gray-900">
+            <tr>
+              <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Nomor BP
+              </th>
+              <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Jenis Motor
+              </th>
+              <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Jenis Service
+              </th>
+              <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            {loading ? (
+              <TableSkeletonLoader />
+            ) : (
+              services.map((service, index) => (
+                <tr
+                  key={index}
+                  className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                >
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
+                    {service?.service.plate_number}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
+                    {service?.service.motorbike_type}
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4 text-sm text-gray-700 dark:text-gray-200">
+                    {parseServiceTypes(service?.service.service_type).map(
+                      (type, idx) => (
+                        <ServiceTypeBadge key={idx} type={type} />
+                      )
+                    )}
+                  </td>
+
+                  <td className="whitespace-nowrap px-6 py-4 text-sm">
+                    <Link
+                      to=""
+                      className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
+                    >
+                      View
+                    </Link>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 };
 
 export default OrderList;

@@ -9,10 +9,12 @@ import { LoginAPI, LogoutAPI, RegisterAPI } from "../api/AuthApi";
 import { handleErrors } from "../services/handleAuthError";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useCustomer } from "./CustomerContextProvider";
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
+  const { fetchCustomer } = useCustomer();
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(
     localStorage.getItem("app_token_key") || null
@@ -53,6 +55,7 @@ const AuthContextProvider = ({ children }) => {
         setIsAuth(true);
         localStorage.setItem("app_token_key", response.token);
         localStorage.setItem("is_user_authenticated", true);
+        fetchCustomer();
         navigate("/");
       } catch (error) {
         console.error("Error in Login: ", error);

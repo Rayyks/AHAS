@@ -29,20 +29,21 @@ Route::get('/blogs', [BloggerController::class, 'index']);
 // Protected routes
 Route::middleware('auth:sanctum')->group(function () {
 
-    // User routes
-    Route::get('/users', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::put('/users/{id}', [UserController::class, 'update']);
-    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    // User routes with role middleware
+    Route::middleware(['auth:sanctum', RoleMiddleware::class . ':admin'])->group(function () {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::get('/users/{id}', [UserController::class, 'show']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::put('/users/{id}', [UserController::class, 'update']);
+        Route::delete('/users/{id}', [UserController::class, 'destroy']);
+    });
 
     // Customer routes with role middleware
-    Route::group(['middleware' => RoleMiddleware::class . ':customer'], function () {
-        Route::get('/customers', [CustomerController::class, 'index']);
-        Route::get('/customers/{id}', [CustomerController::class, 'show']);
+    Route::middleware(['auth:sanctum', RoleMiddleware::class . ':customer'])->group(function () {
+        Route::get('/customers', [CustomerController::class, 'show']); // Change 'show' route to fetch the authenticated customer
         Route::post('/customers', [CustomerController::class, 'store']);
-        Route::put('/customers/{id}', [CustomerController::class, 'update']);
-        Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+        Route::put('/customers', [CustomerController::class, 'update']); // Update route for updating customer data
+        Route::delete('/customers', [CustomerController::class, 'destroy']); // Update route for deleting customer data
     });
 
     // Admin routes with role middleware

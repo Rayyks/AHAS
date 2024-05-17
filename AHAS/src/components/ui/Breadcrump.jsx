@@ -50,6 +50,7 @@ const Breadcrumb = () => {
                   />
                 </svg>
               </li>
+
               <li>
                 {index === pathnames.length - 1 ? (
                   <span className="text-gray-500">{value}</span>

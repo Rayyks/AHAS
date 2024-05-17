@@ -16,9 +16,11 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('plate_number');
             $table->string('motorbike_type');
-            $table->enum('service_type', ['oil_change', 'light_service', 'heavy_service']);
+            $table->string('service_type');
             $table->text('additional_service')->nullable();
             $table->enum('status', ['waitlist', 'on_progress', 'payment', 'done'])->default('waitlist');
+            $table->timestamp('scheduled_date')->nullable(); // Add the schedule_date column
+            $table->decimal('price', 12, 2); // Add the price column (adjust precision and scale as needed)
             $table->timestamps();
         });
     }

@@ -28,29 +28,39 @@ export const navs = [
 
 export const sidebar_nav = [
   {
-    name: "Dashboard",
-    href: "/dashboard",
-    icon: <IconHome2 />,
-  },
-  {
     name: "Daftar Service",
-    href: "/dashboard/daftar-service",
-    icon: <IconListDetails />,
+    href: "/daftar-service",
+    icon: <IconListDetails className="size-5 opacity-75" />,
   },
   {
     name: "Lihat Daftar",
-    href: "/dashboard/lihat-daftar",
-    icon: <IconListCheck />,
+    href: "/lihat-daftar",
+    icon: <IconListCheck className="size-5 opacity-75" />,
   },
   {
     name: "Riwayat Service",
-    href: "/dashboard/riwayat-service",
-    icon: <IconHistory />,
+    href: "/riwayat-service",
+    icon: <IconHistory className="size-5 opacity-75" />,
   },
   {
     name: "Profile",
-    href: "/dashboard/profile",
-    icon: <IconUserCircle />,
+    href: "/profile",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="size-5 opacity-75"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        strokeWidth="2"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+        />
+      </svg>
+    ),
   },
 ];
 

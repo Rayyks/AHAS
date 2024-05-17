@@ -71,7 +71,10 @@ const AuthGuard = () => {
           </div>
         </div>
 
-        <button className="text-gray-500 transition hover:text-gray-600">
+        <button
+          className="text-gray-500 transition hover:text-gray-600"
+          onClick={(e) => navigate("/")}
+        >
           <span className="sr-only">Dismiss popup</span>
 
           <svg

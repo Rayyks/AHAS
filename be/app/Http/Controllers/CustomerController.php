@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class CustomerController extends Controller
@@ -13,9 +14,17 @@ class CustomerController extends Controller
         return User::where('role', 'customer')->get();
     }
 
-    public function show($id)
+    public function show()
     {
-        return User::where('role', 'customer')->findOrFail($id);
+        // Retrieve the authenticated customer
+        $customer = Auth::user();
+
+        // Check if the user is authenticated and has the role of 'customer'
+        if ($customer && $customer->role === 'customer') {
+            return response()->json($customer, 200);
+        } else {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
     }
 
     public function store(Request $request)
