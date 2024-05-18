@@ -6,7 +6,7 @@ const Sidebar = ({ isOpen }) => {
   const { Logout } = useAuth();
   return (
     <div
-      className={`fixed z-30 inset-y-0 left-0 transform  h-screen ${
+      className={`fixed z-30 inset-y-0 left-0 transform h-screen ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 flex flex-col w-64 h-full bg-gray-800`}
     >

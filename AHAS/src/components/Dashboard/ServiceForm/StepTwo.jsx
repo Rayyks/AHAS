@@ -1,4 +1,7 @@
 import React, { Fragment } from "react";
+import Select from "react-select";
+import { useState } from "react";
+import { motorbikeOptions } from "../../../utils/data";
 
 export const StepTwo = ({
   step,
@@ -6,6 +9,8 @@ export const StepTwo = ({
   handleNextStep,
   handlePreviousStep,
 }) => {
+  const [selectedMotorbike, setSelectedMotorbike] = useState(null);
+
   // Calculate the minimum and maximum dates for the scheduled date
   const today = new Date();
   const tomorrow = new Date(today);
@@ -21,8 +26,8 @@ export const StepTwo = ({
     <Fragment>
       {step === 2 && (
         <div>
-          <h2 className="mb-4 text-lg font-medium text-gray-500">
-            Step 2: Choose Service Type
+          <h2 className="mt-4 mb-4 text-lg font-medium text-gray-500">
+            Step 2: Lengapi Data Servis
           </h2>
           <div className="mt-12 space-y-2">
             <label
@@ -35,7 +40,7 @@ export const StepTwo = ({
               type="text"
               id="plate_number"
               onChange={(e) => handleChange("plate_number", e.target.value)}
-              className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
+              className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none  border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
               placeholder="Masukan nomor BP"
               required
             />
@@ -47,13 +52,11 @@ export const StepTwo = ({
             >
               Jenis Motor / Tipe Motor
             </label>
-            <input
-              type="text"
-              id="motorbike_type"
-              onChange={(e) => handleChange("motorbike_type", e.target.value)}
-              className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
-              placeholder="Enter motorbike type"
-              required
+            <Select
+              options={motorbikeOptions}
+              value={selectedMotorbike}
+              onChange={setSelectedMotorbike}
+              placeholder="Pilih jenis motor..."
             />
           </div>
           <div className="mt-4 space-y-2">
@@ -71,15 +74,15 @@ export const StepTwo = ({
                 value="ganti_oli"
                 onChange={(e) => handleChange("service_type", e.target.value)}
               />
-              <label htmlFor="oil_change">Oil Change</label>
+              <label htmlFor="oil_change">Ganti Oli</label>
               <input
                 type="checkbox"
                 id="light_service"
                 name="service_type"
-                value="servce_ringan"
+                value="service_ringan"
                 onChange={(e) => handleChange("service_type", e.target.value)}
               />
-              <label htmlFor="light_service">Light Service</label>
+              <label htmlFor="light_service">Service Ringan</label>
               <input
                 type="checkbox"
                 id="heavy_service"
@@ -87,7 +90,7 @@ export const StepTwo = ({
                 value="service_lengkap"
                 onChange={(e) => handleChange("service_type", e.target.value)}
               />
-              <label htmlFor="heavy_service">Heavy Service</label>
+              <label htmlFor="heavy_service">Service Berat</label>
             </div>
           </div>
           <div className="mt-4 space-y-2">

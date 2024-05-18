@@ -78,7 +78,7 @@ class ServiceController extends Controller
             'service_type' => json_encode($request->service_type),
             'additional_service' => $request->additional_service,
             'scheduled_date' => $scheduledDate, // Assign scheduled_date
-            'status' => 'Waitlist', // default status
+            'status' => 'Antrian', // default status
             'user_id' => Auth::id(), // assuming the user is authenticated
             'price' => $totalPrice // Assign the calculated total price
         ]);

@@ -40,10 +40,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Customer routes with role middleware
     Route::middleware(['auth:sanctum', RoleMiddleware::class . ':customer'])->group(function () {
-        Route::get('/customers', [CustomerController::class, 'show']); // Change 'show' route to fetch the authenticated customer
-        Route::post('/customers', [CustomerController::class, 'store']);
-        Route::put('/customers', [CustomerController::class, 'update']); // Update route for updating customer data
-        Route::delete('/customers', [CustomerController::class, 'destroy']); // Update route for deleting customer data
+        Route::get('/customer', [CustomerController::class, 'show']); // Get the authenticated customer
+        Route::post('/customer', [CustomerController::class, 'store']); // Create a new customer (if needed)
+        Route::put('/customer', [CustomerController::class, 'update']); // Update the authenticated customer
+        Route::delete('/customer', [CustomerController::class, 'destroy']); // Delete the authenticated customer
     });
 
     // Admin routes with role middleware

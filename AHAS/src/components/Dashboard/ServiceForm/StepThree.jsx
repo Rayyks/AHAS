@@ -33,7 +33,7 @@ export const StepThree = ({
               <div key={index} className="flex flex-col">
                 <span className="text-md font-semibold">{label}:</span>
                 <span
-                  className={` px-4 rounded-md text-md font-semibold text-center ${
+                  className={`py-2 px-4 rounded-md text-md font-semibold text-center ${
                     value
                       ? "bg-green-100 text-green-700"
                       : label === "Service Perbaikan"

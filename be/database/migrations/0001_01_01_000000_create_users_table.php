@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('email')->unique();
             $table->string('password');
-            $table->string('profile_picture')->nullable(); // Add profile picture column
+            $table->string('profile_picture')->nullable();
             $table->enum('role', ['customer', 'admin', 'blogger'])->default('customer');
             $table->timestamps();
         });

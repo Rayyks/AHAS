@@ -34,6 +34,18 @@ const OrderList = () => {
     }
   };
 
+  if (services.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            No orders found.
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="overflow-x-auto bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -48,6 +60,9 @@ const OrderList = () => {
               </th>
               <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
                 Jenis Service
+              </th>
+              <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
+                Status
               </th>
               <th className="whitespace-nowrap px-6 py-4 text-left text-sm font-semibold text-gray-900 dark:text-white">
                 Action
@@ -76,7 +91,21 @@ const OrderList = () => {
                       )
                     )}
                   </td>
-
+                  <td
+                    className={` text-center font-bold text-md rounded-xl whitespace-nowrap px-2 text-gray-100 dark:text-gray-900 ${
+                      service?.service.status === "waitlist"
+                        ? "bg-gray-300"
+                        : service?.service.status === "on_progress"
+                        ? "bg-orange-500"
+                        : service?.service.status === "payment"
+                        ? "bg-blue-500"
+                        : service?.service.status === "done"
+                        ? "bg-green-500"
+                        : ""
+                    }`}
+                  >
+                    {service?.service.status}
+                  </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm">
                     <Link
                       to=""

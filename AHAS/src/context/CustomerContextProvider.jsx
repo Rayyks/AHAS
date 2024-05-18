@@ -6,12 +6,15 @@ import {
   useCallback,
   useMemo,
 } from "react";
+import toast from "react-hot-toast";
 import {
   deleteCustomer,
-  getCustomerById,
   getCustomers,
   updateCustomer,
 } from "../api/CustomerApi";
+import { handleCustomerErrors } from "../services/handleCustomerError";
+
+import { useNavigate } from "react-router-dom";
 
 export const CustomerContext = createContext();
 
@@ -20,52 +23,58 @@ const CustomerContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //   ADMIN USE ONLY
+  const navigate = useNavigate();
+
   const fetchCustomer = useCallback(async () => {
     setLoading(true);
     try {
-      setLoading(false);
       const response = await getCustomers();
       setCustomer(response);
     } catch (error) {
+      handleCustomerErrors(error);
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  //   TO GET ALL THE CUSTOMERS , FOR ADMIN USE
   useEffect(() => {
     fetchCustomer();
   }, [fetchCustomer]);
 
-  //   CUSTOMER AND ADMIN CAN USE THIS TO UPDATE CUSTOMER BY ID
-  const updateCustomerData = useCallback(async (id, data) => {
+  const updateCustomerData = useCallback(async (data) => {
     setLoading(true);
     try {
-      setLoading(false);
-      const response = await toast.promise(updateCustomer(id, data), {
+      const response = await toast.promise(updateCustomer(data), {
         loading: "Updating...",
         success: "Update Successful.",
         error: "Failed to Update. Please try again later.",
       });
       setCustomer(response.data);
+      fetchCustomer();
+      navigate("/dashboard/daftar-service");
     } catch (error) {
+      handleCustomerErrors(error);
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  //   DELETE THAT MF UP, BUT ONLY ADMIN CAN DO THIS
-  const deleteSingleCustomer = useCallback(async (id) => {
+  const deleteAccount = useCallback(async () => {
     setLoading(true);
     try {
-      setLoading(false);
-      await toast.promise(deleteCustomer(id), {
+      await toast.promise(deleteCustomer(), {
         loading: "Deleting...",
         success: "Delete Successful.",
         error: "Failed to Delete. Please try again later.",
       });
       setCustomer({});
     } catch (error) {
+      handleCustomerErrors(error);
       setError(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
@@ -76,16 +85,9 @@ const CustomerContextProvider = ({ children }) => {
       error,
       fetchCustomer,
       updateCustomerData,
-      deleteSingleCustomer,
+      deleteAccount,
     }),
-    [
-      customer,
-      loading,
-      error,
-      fetchCustomer,
-      updateCustomerData,
-      deleteSingleCustomer,
-    ]
+    [customer, loading, error, fetchCustomer, updateCustomerData, deleteAccount]
   );
 
   return (

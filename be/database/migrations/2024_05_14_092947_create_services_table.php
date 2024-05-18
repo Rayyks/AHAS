@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('motorbike_type');
             $table->string('service_type');
             $table->text('additional_service')->nullable();
-            $table->enum('status', ['waitlist', 'on_progress', 'payment', 'done'])->default('waitlist');
+            $table->enum('status', ['Antrian', 'Sedang di Service', 'Pembayaran', 'Selesai'])->default('Antrian');
             $table->timestamp('scheduled_date')->nullable(); // Add the schedule_date column
             $table->decimal('price', 12, 2); // Add the price column (adjust precision and scale as needed)
             $table->timestamps();

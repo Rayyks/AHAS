@@ -5,8 +5,8 @@ export const StepOne = ({ step, customer, handleNextStep, handleChange }) => {
     <Fragment>
       {step === 1 && (
         <div>
-          <h2 className="text-lg font-medium text-gray-500">
-            Step 1: Personal Information
+          <h2 className="mt-4 text-lg font-medium text-gray-500">
+            Step 1: Data Pelanggan
           </h2>
           <div className="mt-12 space-y-2">
             <label htmlFor="fullname" className="block text-sm text-gray-700">

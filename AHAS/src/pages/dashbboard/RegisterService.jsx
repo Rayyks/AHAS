@@ -64,7 +64,7 @@ const RegisterService = () => {
 
   return (
     <section>
-      <div className="px-8 py-24 mx-auto md:px-12 lg:px-32 max-w-7xl">
+      <div className="px-8 py-24 mx-auto md:px-12 lg:px-32 max-w-7xl -mt-20 h-screen overflow-auto">
         <div className="max-w-full mx-auto md:max-w-full md:w-full">
           <div className="flex flex-col text-center">
             <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
@@ -72,8 +72,11 @@ const RegisterService = () => {
             </h1>
             <p className="mt-4 text-base font-medium text-gray-500"></p>
           </div>
-          <div className="p-2 -mt-20 border bg-gray-50 rounded-3xl">
-            <div className="p-10 bg-white border shadow-lg rounded-2xl">
+          <div className="p-2 border bg-gray-50 rounded-3xl overflow-hidden">
+            <div
+              className="p-10 bg-white border shadow-lg rounded-2xl overflow-y-auto max-h-screen"
+              style={{ scrollbarWidth: "thin" }}
+            >
               <form onSubmit={handleSubmit}>
                 {/* Step 1 */}
                 <StepOne
