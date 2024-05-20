@@ -22,7 +22,6 @@ export const StepThree = ({
               ["Nomor BP", formData?.plate_number, "Belum di isi"],
               ["Type Motor", formData?.motorbike_type, "Belum di isi"],
               ["Jenis Service", formData?.service_type, "Belum dipilih"],
-              ["Jenis Service", formData?.service_type, "Belum dipilih"],
               ["Jadwal Service", formData?.scheduled_date, "Belum dipilih"],
               [
                 "Service Perbaikan",

@@ -13,7 +13,8 @@ class ServiceController extends Controller
     // Get all services
     public function index()
     {
-        $services = Service::all();
+        // Fetch services only for the authenticated user
+        $services = Service::where('user_id', Auth::id())->get();
 
         // Fetch customer data for each service
         $servicesWithCustomers = $services->map(function ($service) {

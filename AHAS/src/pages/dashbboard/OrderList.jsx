@@ -8,24 +8,9 @@ import ServiceTypeBadge from "../../components/ui/ServiceTypes";
 const OrderList = () => {
   const { loading, services } = useService();
 
-  // Function to format date to a more detailed format
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      timeZoneName: "short",
-    };
-    return date.toLocaleDateString("en-US", options);
-  };
-
   // Function to parse the JSON array string
   const parseServiceTypes = (types) => {
+    if (typeof types !== "string") return [];
     try {
       return JSON.parse(types);
     } catch (error) {
@@ -39,7 +24,7 @@ const OrderList = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center">
           <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-            No orders found.
+            Tidak ada order service yang ditemukan.
           </h2>
         </div>
       </div>
@@ -93,13 +78,13 @@ const OrderList = () => {
                   </td>
                   <td
                     className={` text-center font-bold text-md rounded-xl whitespace-nowrap px-2 text-gray-100 dark:text-gray-900 ${
-                      service?.service.status === "waitlist"
+                      service?.service.status === "Antrian"
                         ? "bg-gray-300"
-                        : service?.service.status === "on_progress"
+                        : service?.service.status === "Sedang di Service"
                         ? "bg-orange-500"
-                        : service?.service.status === "payment"
+                        : service?.service.status === "Pembayaran"
                         ? "bg-blue-500"
-                        : service?.service.status === "done"
+                        : service?.service.status === "Selesai"
                         ? "bg-green-500"
                         : ""
                     }`}
@@ -108,7 +93,7 @@ const OrderList = () => {
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 text-sm">
                     <Link
-                      to=""
+                      to={`/dashboard/lihat-daftar/${service.service.id}`}
                       className="inline-block rounded bg-indigo-600 px-4 py-2 text-xs font-medium text-white hover:bg-indigo-700"
                     >
                       View

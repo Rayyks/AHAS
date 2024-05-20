@@ -22,6 +22,12 @@ export const StepTwo = ({
   const minDate = tomorrow.toISOString().split("T")[0];
   const maxDate = twoDaysAhead.toISOString().split("T")[0];
 
+  // Handle motorbike type change
+  const handleMotorbikeTypeChange = (selectedOption) => {
+    setSelectedMotorbike(selectedOption);
+    handleChange("motorbike_type", selectedOption.value);
+  };
+
   return (
     <Fragment>
       {step === 2 && (
@@ -55,7 +61,7 @@ export const StepTwo = ({
             <Select
               options={motorbikeOptions}
               value={selectedMotorbike}
-              onChange={setSelectedMotorbike}
+              onChange={handleMotorbikeTypeChange} // Update this line
               placeholder="Pilih jenis motor..."
             />
           </div>
@@ -90,7 +96,7 @@ export const StepTwo = ({
                 value="service_lengkap"
                 onChange={(e) => handleChange("service_type", e.target.value)}
               />
-              <label htmlFor="heavy_service">Service Berat</label>
+              <label htmlFor="heavy_service">Service Lengkap</label>
             </div>
           </div>
           <div className="mt-4 space-y-2">

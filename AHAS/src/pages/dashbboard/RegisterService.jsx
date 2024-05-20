@@ -5,6 +5,7 @@ import { StepTwo } from "../../components/Dashboard/ServiceForm/StepTwo";
 import { StepThree } from "../../components/Dashboard/ServiceForm/StepThree";
 import toast from "react-hot-toast";
 import { useService } from "../../context/ServiceContextProvider";
+import { Link } from "react-router-dom";
 
 const RegisterService = () => {
   // GET CUSTOMER DATA
@@ -64,11 +65,23 @@ const RegisterService = () => {
 
   return (
     <section>
+      {customer?.address && customer?.phone_number ? null : (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-10 mx-auto max-w-7xl">
+          <strong className="font-bold">Peringatan!</strong>
+          <span className="block sm:inline">
+            {" "}
+            Tolong lengkapi data pelanggan terlebih dahulu. Klik{" "}
+            <Link to="/dashboard/profile" className="underline ">
+              disini
+            </Link>
+          </span>
+        </div>
+      )}
       <div className="px-8 py-24 mx-auto md:px-12 lg:px-32 max-w-7xl -mt-20 h-screen overflow-auto">
         <div className="max-w-full mx-auto md:max-w-full md:w-full">
           <div className="flex flex-col text-center">
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900">
-              Fill up this multistep form
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+              Lengkapi data service
             </h1>
             <p className="mt-4 text-base font-medium text-gray-500"></p>
           </div>

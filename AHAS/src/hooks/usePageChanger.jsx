@@ -14,6 +14,7 @@ import OrderList from "../pages/dashbboard/OrderList";
 import History from "../pages/dashbboard/History";
 import Profile from "../pages/dashbboard/Profile";
 import Index from "../pages/dashbboard/Index";
+import OrderDetail from "../pages/dashbboard/OrderDetail";
 
 const UseLayoutPageChanger = () => {
   const location = useLocation();
@@ -47,6 +48,10 @@ const UseDashboardPageChanger = () => {
       return <RegisterService />;
     case "/dashboard/lihat-daftar":
       return <OrderList />;
+    case pathname.match(/^\/dashboard\/lihat-daftar\/[a-zA-Z0-9\-]+$/)
+      ? pathname
+      : null:
+      return <OrderDetail />;
     case "/dashboard/riwayat-service":
       return <History />;
     case "/dashboard/profile":

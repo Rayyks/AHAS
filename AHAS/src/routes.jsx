@@ -69,6 +69,11 @@ export const routes = [
     index: false,
   },
   {
+    path: "/dashboard/lihat-daftar/:id",
+    component: <DashboardLayout />,
+    index: false,
+  },
+  {
     path: "/dashboard/riwayat-service",
     component: <DashboardLayout />,
     index: false,

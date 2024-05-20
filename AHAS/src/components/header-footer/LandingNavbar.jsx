@@ -76,15 +76,6 @@ const LandingNavbar = () => {
                 >
                   {isAuth ? "Dashboard" : "Login"}
                 </Link>
-
-                <div className="hidden sm:flex">
-                  <Link
-                    className="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                    to={isAuth ? "/daftar-service" : "/register"}
-                  >
-                    {isAuth ? "Daftar Service" : "Register"}
-                  </Link>
-                </div>
               </div>
 
               <div className="block md:hidden">
@@ -135,15 +126,6 @@ const LandingNavbar = () => {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {isAuth ? "Dashboard" : "Login"}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="block rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600 dark:bg-gray-800 dark:text-white dark:hover:text-white/75"
-                  to={isAuth ? "/daftar-service" : "/register"}
-                  onClick={() => setIsMobileMenuOpen(false)} // Close menu on link click
-                >
-                  {isAuth ? "Daftar Service" : "Register"}
                 </Link>
               </li>
             </ul>

@@ -7,7 +7,7 @@ import usePageChanger from "../../hooks/usePageChanger";
 
 const DashboardLayout = () => {
   const { isAuth } = useAuth();
-  const CurrentPage = usePageChanger.UseDashboardPageChanger(); // Corrected usage of usePageChanger
+  const CurrentPage = usePageChanger.UseDashboardPageChanger();
 
   const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
 

@@ -31,7 +31,6 @@ const CustomerContextProvider = ({ children }) => {
       const response = await getCustomers();
       setCustomer(response);
     } catch (error) {
-      handleCustomerErrors(error);
       setError(error);
     } finally {
       setLoading(false);
