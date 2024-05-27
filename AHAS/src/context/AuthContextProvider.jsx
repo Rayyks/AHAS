@@ -8,58 +8,51 @@ import {
 import { LoginAPI, LogoutAPI, RegisterAPI } from "../api/AuthApi";
 import { handleErrors } from "../services/handleAuthError";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 import { useCustomer } from "./CustomerContextProvider";
+import { useService } from "./ServiceContextProvider";
+import useLocalStorage from "../hooks/useLocalStorage";
+import handleAPICall from "../services/handleAPICall";
 
 export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const { fetchCustomer } = useCustomer();
+  const { fetchServices, serviceHistory } = useService();
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(
-    localStorage.getItem("app_token_key") || null
-  );
-  const [isAuth, setIsAuth] = useState(
-    localStorage.getItem("is_user_authenticated") === "true"
-  );
+  const [token, setToken] = useLocalStorage("app_token_key", null);
+  const [isAuth, setIsAuth] = useLocalStorage("is_user_authenticated", false);
   const navigate = useNavigate();
 
-  const Register = useCallback(
-    async (data) => {
-      try {
-        await toast.promise(RegisterAPI(data), {
-          loading: "Registering...",
-          success: "Registration successful. Please login.",
-          error: "Failed to register. Please try again later.",
-        });
-        navigate("/login");
-      } catch (error) {
-        console.error("Error in Register: ", error);
-        handleErrors(error);
-        throw error;
-      }
-    },
-    [navigate]
-  );
+  const Register = useCallback(async (data) => {
+    try {
+      await handleAPICall(
+        RegisterAPI(data),
+        "Registration successful. Please login.",
+        "Failed to register. Please try again later."
+      );
+      navigate("/login");
+    } catch (error) {
+      console.error("Error in Register: ", error);
+      handleErrors(error);
+      throw error;
+    }
+  }, []);
 
   const Login = useCallback(
     async (data) => {
       try {
-        const response = await toast.promise(LoginAPI(data), {
-          loading: "Logging in...",
-          success: "Login successful.",
-          error: "Failed to login. Please try again later.",
-        });
+        const response = await handleAPICall(
+          LoginAPI(data),
+          "Failed to login. Please try again later."
+        );
         setUser(response.user);
         setToken(response.token);
         setIsAuth(true);
-        localStorage.setItem("app_token_key", response.token);
-        localStorage.setItem("is_user_authenticated", true);
         fetchCustomer();
+        serviceHistory();
+        fetchServices();
         navigate("/");
       } catch (error) {
-        console.error("Error in Login: ", error);
-        handleErrors(error);
         throw error;
       }
     },
@@ -68,19 +61,20 @@ const AuthContextProvider = ({ children }) => {
 
   const Logout = useCallback(async () => {
     try {
-      await LogoutAPI();
+      await handleAPICall(
+        LogoutAPI(),
+        "Logout successful.",
+        "Logout failed. Please try again later."
+      );
       setUser(null);
       setToken(null);
-      setIsAuth(false);
       localStorage.removeItem("app_token_key");
-      localStorage.removeItem("is_user_authenticated");
+      setIsAuth(false);
       navigate("/login");
     } catch (error) {
-      console.error("Error in Logout: ", error);
-      toast.error("Logout failed. Please try again later.");
       throw error;
     }
-  }, [navigate]);
+  }, []);
 
   const value = useMemo(
     () => ({ user, token, isAuth, Register, Login, Logout }),

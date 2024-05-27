@@ -14,7 +14,7 @@ import {
 } from "../api/ServiceApi";
 import { handleServiceErrors } from "../services/handleServiceError";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
+import handleAPICall from "../services/handleAPICall";
 
 export const ServiceContext = createContext();
 
@@ -30,10 +30,9 @@ const ServiceContextProvider = ({ children }) => {
     try {
       const data = await getServicesAPI();
       setServices(data);
-      setLoading(false);
     } catch (error) {
-      handleServiceErrors(error);
       setError(error);
+    } finally {
       setLoading(false);
     }
   }, []);
@@ -45,19 +44,18 @@ const ServiceContextProvider = ({ children }) => {
   const createService = async (data) => {
     setLoading(true);
     try {
-      const response = await toast.promise(createServiceAPI(data), {
-        loading: "Creating Service...",
-        success: "Create Successful.",
-        error: "Failed to Create. Please try again later.",
-      });
-      setServices([...services, response]);
+      const response = await handleAPICall(
+        createServiceAPI(data),
+        "Create Successful.",
+        "Failed to Create. Please try again later."
+      );
+      setServices((prevServices) => [...prevServices, response]);
       fetchServices();
-      setLoading(false);
       navigate("/dashboard/lihat-daftar");
     } catch (error) {
       handleServiceErrors(error);
       setError(error);
-      console.log("Error creating service: ", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -65,18 +63,23 @@ const ServiceContextProvider = ({ children }) => {
   const updateService = async (data) => {
     setLoading(true);
     try {
-      const response = await toast.promise(updateServiceAPI(data), {
-        loading: "Updating Service...",
-        success: "Update Successful.",
-        error: "Failed to Update. Please try again later.",
-      });
-      setServices([...services, response]);
+      const response = await handleAPICall(
+        updateServiceAPI(data),
+        "Update Successful.",
+        "Failed to Update. Please try again later."
+      );
+      setServices((prevServices) =>
+        prevServices.map((service) =>
+          service.id === data.id ? response : service
+        )
+      );
       fetchServices();
-      setLoading(false);
+      serviceHistory();
       navigate("/dashboard/lihat-daftar");
     } catch (error) {
       handleServiceErrors(error);
       setError(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -84,19 +87,20 @@ const ServiceContextProvider = ({ children }) => {
   const deleteService = async (id) => {
     setLoading(true);
     try {
-      const response = await toast.promise(deleteServiceAPI(id), {
-        loading: "Deleting Service...",
-        success: "Delete Successful.",
-        error: "Failed to Delete. Please try again later.",
-      });
-      setServices([...services, response]);
+      await handleAPICall(
+        deleteServiceAPI(id),
+        "Delete Successful.",
+        "Failed to Delete. Please try again later."
+      );
+      setServices((prevServices) =>
+        prevServices.filter((service) => service.id !== id)
+      );
       fetchServices();
-      setLoading(false);
       navigate("/dashboard/lihat-daftar");
     } catch (error) {
       handleServiceErrors(error);
-      handleServiceErrors(error);
       setError(error);
+    } finally {
       setLoading(false);
     }
   };
@@ -113,6 +117,7 @@ const ServiceContextProvider = ({ children }) => {
     }),
     [
       services,
+
       loading,
       error,
       fetchServices,

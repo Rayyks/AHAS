@@ -13,8 +13,8 @@ import {
   updateCustomer,
 } from "../api/CustomerApi";
 import { handleCustomerErrors } from "../services/handleCustomerError";
-
 import { useNavigate } from "react-router-dom";
+import handleAPICall from "../services/handleAPICall";
 
 export const CustomerContext = createContext();
 
@@ -44,11 +44,11 @@ const CustomerContextProvider = ({ children }) => {
   const updateCustomerData = useCallback(async (data) => {
     setLoading(true);
     try {
-      const response = await toast.promise(updateCustomer(data), {
-        loading: "Updating...",
-        success: "Update Successful.",
-        error: "Failed to Update. Please try again later.",
-      });
+      const response = await handleAPICall(
+        updateCustomer(data),
+        "Update Successful.",
+        "Failed to Update. Please try again later."
+      );
       setCustomer(response.data);
       fetchCustomer();
       navigate("/dashboard/daftar-service");

@@ -42,6 +42,7 @@ class ServiceController extends Controller
         ]);
     }
 
+    // Store a new service request
     public function store(Request $request)
     {
         $request->validate([
@@ -96,7 +97,6 @@ class ServiceController extends Controller
         ]);
     }
 
-
     // Update a service request
     public function update(Request $request, $id)
     {
@@ -124,5 +124,19 @@ class ServiceController extends Controller
         $service->delete();
 
         return response()->json(['message' => 'Service request deleted successfully']);
+    }
+
+    // Get service history or services with status "Selesai"
+    public function serviceHistory()
+    {
+        $services = Service::where('user_id', Auth::id())
+            ->where('status', 'Selesai')
+            ->get();
+
+        if ($services->isEmpty()) {
+            return response()->json(['message' => 'No completed services found.'], 404);
+        }
+
+        return response()->json($services);
     }
 }

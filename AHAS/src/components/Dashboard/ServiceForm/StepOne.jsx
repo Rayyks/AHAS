@@ -16,7 +16,8 @@ export const StepOne = ({ step, customer, handleNextStep, handleChange }) => {
               type="text"
               id="fullname"
               value={customer?.fullname || "Loading..."}
-              onChange={(e) => handleChange("fullname", e.target.value)}
+              readOnly
+              // onChange={(e) => handleChange("fullname", e.target.value)}
               className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
             />
           </div>
@@ -33,7 +34,6 @@ export const StepOne = ({ step, customer, handleNextStep, handleChange }) => {
               value={customer?.address || "Loading..."}
               readOnly
               className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
-              placeholder="Enter your email"
             />
           </div>
           <div className="mt-4 space-y-2">
@@ -49,7 +49,6 @@ export const StepOne = ({ step, customer, handleNextStep, handleChange }) => {
               value={customer?.phone_number || "0"}
               readOnly
               className="block w-full h-12 px-4 py-2 text-blue-500 duration-200 border rounded-lg appearance-none bg-chalk border-zinc-300 placeholder-zinc-300 focus:border-zinc-300 focus:outline-none focus:ring-zinc-300 sm:text-sm"
-              placeholder="Enter your email"
             />
           </div>
           <div className="mt-4">

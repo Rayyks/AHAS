@@ -1,4 +1,3 @@
-// Import the necessary dependencies if not already imported
 import React from "react";
 import { Link } from "react-router-dom";
 import { useService } from "../../context/ServiceContextProvider";
@@ -18,18 +17,6 @@ const OrderList = () => {
       return [];
     }
   };
-
-  if (services.length === 0) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
-            Tidak ada order service yang ditemukan.
-          </h2>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -57,6 +44,15 @@ const OrderList = () => {
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {loading ? (
               <TableSkeletonLoader />
+            ) : services.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="5"
+                  className="text-center py-4 text-gray-700 dark:text-gray-100"
+                >
+                  No service orders found.
+                </td>
+              </tr>
             ) : (
               services.map((service, index) => (
                 <tr
@@ -77,15 +73,15 @@ const OrderList = () => {
                     )}
                   </td>
                   <td
-                    className={` text-center font-bold text-md rounded-xl whitespace-nowrap px-2 text-gray-100 dark:text-gray-900 ${
+                    className={`text-center font-bold text-md rounded-xl whitespace-nowrap px-2 text-gray-100 dark:text-gray-900 ${
                       service?.service.status === "Antrian"
                         ? "bg-gray-300"
                         : service?.service.status === "Sedang di Service"
-                        ? "bg-orange-500"
+                        ? "bg-orange-300"
                         : service?.service.status === "Pembayaran"
-                        ? "bg-blue-500"
+                        ? "bg-blue-300"
                         : service?.service.status === "Selesai"
-                        ? "bg-green-500"
+                        ? "bg-green-300"
                         : ""
                     }`}
                   >

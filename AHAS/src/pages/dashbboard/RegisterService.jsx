@@ -65,7 +65,7 @@ const RegisterService = () => {
 
   return (
     <section>
-      {customer?.address && customer?.phone_number ? null : (
+      {!loading && customer?.address && customer?.phone_number ? null : (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-10 mx-auto max-w-7xl">
           <strong className="font-bold">Peringatan!</strong>
           <span className="block sm:inline">

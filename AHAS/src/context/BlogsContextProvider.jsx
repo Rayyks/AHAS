@@ -32,6 +32,17 @@ const BlogsContextProvider = ({ children }) => {
     fetchBlogs();
   }, [fetchBlogs]);
 
+  const createBlog = useCallback(async (data) => {
+    setLoading(true);
+    try {
+      setLoading(false);
+      setBlogs((prevBlogs) => [...prevBlogs, data]);
+      setError(null);
+    } catch (error) {
+      setError(error);
+      console.log("Error creating blog post", error);
+    }
+  }, []);
   const value = useMemo(
     () => ({ blogs, loading, error }),
     [blogs, loading, error]
