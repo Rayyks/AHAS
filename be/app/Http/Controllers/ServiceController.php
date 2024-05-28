@@ -48,27 +48,36 @@ class ServiceController extends Controller
         $request->validate([
             'plate_number' => 'required|string|max:255',
             'motorbike_type' => 'required|string|max:255',
-            'service_type' => 'required|array', // This line specifies that 'service_type' must be an array
+            'service_type' => 'required|array',
             'additional_service' => 'nullable|string|max:255',
             'scheduled_date' => 'required|date|after_or_equal:tomorrow'
         ]);
+
+        // Check if the user already has an ongoing service
+        $existingService = Service::where('user_id', Auth::id())
+            ->whereIn('status', ['Antrian', 'Waitlist', 'On Progress', 'Payment'])
+            ->first();
+
+        if ($existingService) {
+            return response()->json([
+                'message' => 'You already have an ongoing service. Please wait until it is completed before requesting a new service.'
+            ], 409);
+        }
 
         // Convert scheduled_date to Carbon instance
         $scheduledDate = Carbon::parse($request->scheduled_date);
 
         // Define the price for each service type
         $servicePrices = [
-            'ganti_oli' => 50000, // Price for ganti oli
-            'service_ringan' => 60000, // Price for service ringan
-            'service_lengkap' => 150000 // Price for service lengkap
+            'ganti_oli' => 50000,
+            'service_ringan' => 60000,
+            'service_lengkap' => 150000
         ];
 
         // Calculate the total price based on the selected service types
         $totalPrice = 0;
         foreach ($request->service_type as $type) {
-            // Check if the service type exists in the servicePrices array
             if (array_key_exists($type, $servicePrices)) {
-                // Add the price of the service type to the total price
                 $totalPrice += $servicePrices[$type];
             }
         }
@@ -79,16 +88,16 @@ class ServiceController extends Controller
             'motorbike_type' => $request->motorbike_type,
             'service_type' => json_encode($request->service_type),
             'additional_service' => $request->additional_service,
-            'scheduled_date' => $scheduledDate, // Assign scheduled_date
-            'status' => 'Antrian', // default status
-            'user_id' => Auth::id(), // assuming the user is authenticated
-            'price' => $totalPrice // Assign the calculated total price
+            'scheduled_date' => $scheduledDate,
+            'status' => 'Antrian',
+            'user_id' => Auth::id(),
+            'price' => $totalPrice
         ]);
 
         $service->save();
 
         // Fetch the user/customer data associated with the service
-        $customer = User::find(Auth::id()); // Assuming the user model is named User
+        $customer = User::find(Auth::id());
 
         return response()->json([
             'message' => 'Service request created successfully',
@@ -124,19 +133,5 @@ class ServiceController extends Controller
         $service->delete();
 
         return response()->json(['message' => 'Service request deleted successfully']);
-    }
-
-    // Get service history or services with status "Selesai"
-    public function serviceHistory()
-    {
-        $services = Service::where('user_id', Auth::id())
-            ->where('status', 'Selesai')
-            ->get();
-
-        if ($services->isEmpty()) {
-            return response()->json(['message' => 'No completed services found.'], 404);
-        }
-
-        return response()->json($services);
     }
 }

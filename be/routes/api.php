@@ -71,8 +71,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/services', [ServiceController::class, 'store']);
     Route::put('/services/{id}', [ServiceController::class, 'update']);
     Route::delete('/services/{id}', [ServiceController::class, 'destroy']);
-    // Service routes
-    Route::get('/services-history', [ServiceController::class, 'serviceHistory']);
+
 
 
     // Logout route
