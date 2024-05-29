@@ -17,7 +17,11 @@ export const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
   const { fetchCustomer } = useCustomer();
+<<<<<<< HEAD
   const { fetchServices } = useService();
+=======
+  const { fetchServices, serviceHistory } = useService();
+>>>>>>> 6788be4aa31e0f54a7f6f83c0cb67a984af356b3
   const [user, setUser] = useState(null);
   const [token, setToken] = useLocalStorage("app_token_key", null);
   const [isAuth, setIsAuth] = useLocalStorage("is_user_authenticated", false);
@@ -43,13 +47,20 @@ const AuthContextProvider = ({ children }) => {
       try {
         const response = await handleAPICall(
           LoginAPI(data),
+<<<<<<< HEAD
           "Welcome back!",
+=======
+>>>>>>> 6788be4aa31e0f54a7f6f83c0cb67a984af356b3
           "Failed to login. Please try again later."
         );
         setUser(response.user);
         setToken(response.token);
         setIsAuth(true);
         fetchCustomer();
+<<<<<<< HEAD
+=======
+        serviceHistory();
+>>>>>>> 6788be4aa31e0f54a7f6f83c0cb67a984af356b3
         fetchServices();
         navigate("/");
       } catch (error) {
